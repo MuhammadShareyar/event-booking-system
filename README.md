@@ -20,10 +20,11 @@ cd event-booking-system
 ### 2. Create the Environment File
 Create a .env file by copying .env.example
 ```bash
-cp .env.example .env
-```
+cp .env.example .env 
 
 and add credentials in the .env file.
+```
+
 
 
 ### 3. Run Composer command and access application
