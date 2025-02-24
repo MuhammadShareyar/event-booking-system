@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Config\Database;
+use App\Models\Booking;
 use App\Services\ImportJsonService;
 use Exception;
 
@@ -33,6 +35,22 @@ class BookingController
                 $importJsonService = new ImportJsonService();
                 $importJsonService->import($json);
             }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function index()
+    {
+        $db = Database::connect();
+        try {
+
+            $employeeName = $_GET['employee_name'] ?? '';
+            $eventName = $_GET['event_name'] ?? '';
+            $eventDate = $_GET['event_date'] ?? null;
+
+            $bookings = new Booking($db);
+            return $bookings->getAll($employeeName, $eventName, $eventDate);
         } catch (Exception $e) {
             echo $e->getMessage();
         }

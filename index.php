@@ -30,9 +30,12 @@ try {
         $bookingController->import();
         header('Location: index.php');
         exit;
-    }
+    } else if ($request === 'GET') {
 
-    require_once "./app/Views/index.php"; 
+        $bookings = $bookingController->index();
+
+        require_once "./app/Views/index.php";
+    }
     
 } catch (Exception $e) {
     echo $e->getMessage();

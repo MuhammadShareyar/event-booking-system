@@ -34,4 +34,25 @@ class Booking
             ":fees" => $data["fees"]
         ]);;
     }
+
+    public function getAll(string $employeeName = '', string $eventName = '', string $bookingDate = null): array
+    {
+        $sql = "
+            SELECT ev.name as event_name, emp.name, bookings.fees, ev.event_date FROM bookings 
+            inner join events as ev on bookings.event_id = ev.id 
+            inner join employees as emp on bookings.employee_id = emp.id
+            WHERE (:employee_name = '' OR emp.name LIKE :employee_name)
+            AND (:event_name = '' OR ev.name LIKE :event_name)
+            AND (:event_date IS NULL OR ev.event_date = :event_date)    
+        ";
+        $stmt = $this->connection->prepare($sql);
+
+        $stmt->execute([
+            ':employee_name' => $employeeName ?  '%' . $employeeName . '%' : '',
+            ':event_name' => $eventName ?  '%' . $eventName . '%' : '',
+            ':event_date' => $bookingDate ?: null
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
