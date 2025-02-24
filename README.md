@@ -1,1 +1,1 @@
-# event-booking-system
+# Event Booking System
