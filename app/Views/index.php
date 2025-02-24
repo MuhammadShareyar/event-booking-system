@@ -21,7 +21,7 @@
                 <input type="file" id="jsonFile" class="form-control mt-2" accept="application/json" name="json_file">
             </div>
             <div class="col-md-3">
-                <button type="submit" class="btn btn-secondary mt-2">Upload JSON</button>
+                <button type="submit" id="uploadJsonBtn" class="btn btn-secondary mt-2">Upload JSON</button>
             </div>
         </div>
     </form>
@@ -78,10 +78,18 @@
         </tbody>
 
         <tfoot>
-            <tr>
-                <td colspan="3" class="text-end"><strong>Total:</strong></td>
-                <td id="totalPrice"><?= number_format($total, 2) ?></td>
-            </tr>
+            <?php if (empty($bookings)) : ?>
+                <tr>
+                    <td colspan="4" class="text-center">No records found</td>
+                </tr>
+
+            <?php else : ?>
+                <tr>
+                    <td colspan="3" class="text-end">Total</td>
+                    <td class="price"><?= number_format($total, 2) ?></td>
+                </tr>
+            <?php endif; ?>
+
         </tfoot>
     </table>
 
@@ -91,6 +99,14 @@
     <script>
         document.getElementById("resetBtn").addEventListener("click", function() {
             document.getElementById("event_date").value = "";
+        });
+
+        document.getElementById("uploadJsonBtn").addEventListener("click", function() {
+            let jsonFile = document.getElementById("jsonFile").files[0];
+            if (!jsonFile) {
+                alert("Please select a JSON file before uploading.");
+                return;
+            }
         });
     </script>
 </body>
